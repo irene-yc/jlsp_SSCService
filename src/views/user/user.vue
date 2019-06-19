@@ -32,6 +32,12 @@
 
                     >
                     </el-table-column>
+                    <el-table-column
+                    property="phone"
+                    label="手机号"
+                    align='center'
+                    >
+                    </el-table-column>
                     
                     <el-table-column
                         fixed="right"
@@ -104,6 +110,7 @@ export default {
             total:1,
             tableData: [
               { 
+                phone:"13333333333",
                 id:'123456789',
                 name:'张三',
                 age:'18',
