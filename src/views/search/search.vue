@@ -7,14 +7,14 @@
         </div>
       </el-row>
       <el-row class="searchBox">
-        <el-col :span="20">
+        <div>
           <el-input v-model="auditName" placeholder="请输入身份证号"></el-input>
-        </el-col>
-        <el-col :span="4">
+        </div>
+        <div>
            <el-button type="primary" @click="searchHandle">
           查 询
           </el-button>
-        </el-col>
+        </div>
       </el-row>
       <table v-if="search">
         <tr>
@@ -43,7 +43,7 @@
         </tr>
       </table>
       <div v-if="!search" class="error">
-        <span>您当前的制卡进度为：到达省卡中心！/您的信息待采集，请到四平市政务大厅办理信息采集</span>
+        <span>您当前的制卡进度为：到达省卡中心！<br/>您的信息待采集，请到四平市政务大厅办理信息采集</span>
       </div>
         <!-- <div style="border:1px solid red; width:700px;">
           <el-steps :active="1">
@@ -111,6 +111,13 @@ export default {
 .searchBox{
   width: 80%;
   margin: 40px auto;
+  display: flex;
+    div:nth-child(1){
+      flex: 1
+    }
+    div:nth-child(2){
+      padding-left: 20px;
+    }
 }
 .title{
   font-size: 24px;
@@ -119,7 +126,7 @@ export default {
 html,body{
   // background-color: #2296e8;
   background-color: #000;
-   background: url('../../assets/images/timg.jpeg') no-repeat;
+  background: url('../../assets/images/timg.jpeg') no-repeat;
   background-size: 100% 100%;
 }
 table{
@@ -137,6 +144,33 @@ table{
 }
 .error{
   padding: 0 0 30px 0;
+}
+@media (max-width: 500px){
+    html,body{
+        background: #000;
+        background-color: #2296e8;
+        background-image: none;
+    }
+    .special-audit{
+      width: 90%;
+      margin: 30px auto;
+      padding: 0
+    }
+    .searchBox{
+      width: 90%;
+      margin: 40px auto;
+      display: block;
+      div:nth-child(2){
+       padding: 0; 
+       button{
+         margin-top: 20px;
+        width: 100%;
+      }
+      }
+    }
+    table{
+      width: 100%;
+    }
 }
 </style>
 
