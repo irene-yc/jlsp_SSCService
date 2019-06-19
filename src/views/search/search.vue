@@ -96,6 +96,17 @@ export default {
     background-color: #ffffff;
     padding: 20px 20px;
     border-radius: 5px;
+    .search-handle{
+        display:flex;
+        align-items:center
+    }
+    .table_style{
+      width: 100%;
+      margin-top:20px
+    }
+    // .demo-form-inline .el-input,.demo-form-inline .el-select{
+    // width: 130px!important;
+    // }
 }
 .searchBox{
   width: 80%;
