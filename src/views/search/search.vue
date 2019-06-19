@@ -92,10 +92,12 @@ export default {
 /* 新建完了这个页面要去添加路由，在src/router.js里面添加，添加方法在readme里面 */
 .special-audit{
     width: 50%;
-    margin: 150px auto;
+    margin: 0 auto;
     background-color: #ffffff;
     padding: 20px 20px;
     border-radius: 5px;
+    position: relative;
+    top: 150px;
     .search-handle{
         display:flex;
         align-items:center
@@ -123,11 +125,14 @@ export default {
   font-size: 24px;
   margin-top: 10px;
 }
-html,body{
+html{
   // background-color: #2296e8;
   background-color: #000;
   background: url('../../assets/images/timg.jpeg') no-repeat;
   background-size: 100% 100%;
+}
+body{
+  background-color: transparent;
 }
 table{
   width: 80%;
@@ -152,6 +157,7 @@ table{
         background-image: none;
     }
     .special-audit{
+      top: 0;
       width: 90%;
       margin: 30px auto;
       padding: 0
