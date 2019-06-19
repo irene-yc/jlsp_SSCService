@@ -2,16 +2,7 @@
     <div id="header">
         <div class="textLeft">
             <img src="../assets/logo.png">
-            <span class="sysTitle">{{systemShowName}}</span>
-        </div>
-        <div class="textLeft">
-            <div class="user">
-                <span>产品服务</span>
-                <i class="el-icon-arrow-down"></i>
-                <ul class="sysMenu">
-                    <li v-for="(item,index) in sysProductIntegrate" @click="jumpUrlFun(item.jumpUrl)" :key="index">{{item.productName}}</li>
-                </ul>
-            </div>
+            <span class="sysTitle">{{systemShowName?systemShowName:'后台管理系统'}}</span>
         </div>
         <div class="textRight">
             <!-- <i class="el-icon-message"><a class="brige"></a></i>

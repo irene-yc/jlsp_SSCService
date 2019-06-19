@@ -1,6 +1,6 @@
 <template>
     <div id="aside" :style="isCollapse?'width:70px':'200px'">
-        <div class="sysName" v-if="!isCollapse">政务信息整合管理系统</div>
+        <!-- <div class="sysName" v-if="!isCollapse">政务信息整合管理系统</div> -->
         <el-menu
         router
         default-active="2"
@@ -12,35 +12,15 @@
         active-text-color="#ffd04b"
         :collapse="isCollapse"
         >
-            <!-- <el-submenu index="1">
-                <template slot="title">
-                    <i class="iconfont iconxiangmujibenqingkuangsvg1"></i>
-                    <span>项目基础情况</span>
-                </template>
-                <el-menu-item :index="'/basic/systemBasic'">信息系统基本情况</el-menu-item>
-                <el-menu-item :index="'/basic/networkBasic'">行业专网基本情况</el-menu-item>
-            </el-submenu>
-            <el-submenu index="2">
-                <template slot="title">
-                    <i class="iconfont iconxiangmujianshejinzhan3"></i>
-                    <span>项目建设进展</span>
-                </template>
-                <el-menu-item :index="'/basic/systemConstruction'">系统建设进展</el-menu-item>
-                <el-menu-item :index="'/basic/networkIntegration'">专网整合进展</el-menu-item>
-            </el-submenu>
-            <el-menu-item :index="'/basic/specialAudit'">
-                <i class="iconfont iconzhuanxiangshenji2"></i>
-                <span slot="title">专项审计</span>
+            <el-menu-item :index="'/basic/index'">
+                <i class="iconfont iconxiangmujibenqingkuangsvg1"></i>
+                <span slot="title">首页</span>
             </el-menu-item>
-            <el-submenu index="4">
-                <template slot="title">
-                    <i class="iconfont icongongzuojianbao2"></i>
-                    <span>工作简报</span>
-                </template>
-                <el-menu-item :index="'/basic/progressReport'">进度报表</el-menu-item>
-                <el-menu-item :index="'/basic/workplan'">工作计划</el-menu-item>
-            </el-submenu> -->
-            <template v-for="item in treeMenus">
+            <el-menu-item :index="'/basic/user'">
+                <i class="iconfont iconxiangmujianshejinzhan3"></i>
+                <span slot="title">用户设置</span>
+            </el-menu-item>
+            <!-- <template v-for="item in treeMenus">
                 <el-menu-item :key="item.id" v-if="item.children.length===0" :index="item.sysMenu.url">
                     <i :class="item.sysMenu.icon"></i>
                     <span>{{item.sysMenu.menuName}}</span>
@@ -58,7 +38,7 @@
                     {{item2.sysMenu.menuName}}
                     </el-menu-item>
                 </el-submenu>
-            </template>
+            </template> -->
         </el-menu>
         <i class="iconfont iconshouqi" v-if="!isCollapse" @click="isCollapse=!isCollapse"></i>
         <i class="iconfont iconzhankai" v-if="isCollapse" @click="isCollapse=!isCollapse"></i>

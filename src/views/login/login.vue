@@ -3,7 +3,7 @@
     <div class="login-top">
         <img src="../../assets/images/login/logo1.png">
         <h1>
-            {{systemShowName}}
+            {{systemShowName?systemShowName:'后台管理系统'}}
         </h1>
     </div>
     <div class="login-bottom">
@@ -159,7 +159,7 @@ export default {
      this.$http("get", "/sys/getSystemShowName").then(data => {
        this.systemShowName = data.data.object.systemShowName
         this.$store.commit('setSystemShowName',data.data.object);
-      });
+     });
   }
 };
 </script>
