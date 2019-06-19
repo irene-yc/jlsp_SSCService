@@ -3,7 +3,7 @@
         <div class="sysName" v-if="!isCollapse">政务信息整合管理系统</div>
         <el-menu
         router
-        :default-active="active"
+        default-active="2"
         class="el-menu-vertical-demo"
         @open="handleOpen"
         @close="handleClose"
@@ -71,8 +71,7 @@ export default {
     name:'AsideAssembly',
     data(){
         return{
-            isCollapse:false,//页面所有的数据写在这里
-            active:'/basic/systemBasic'
+            isCollapse:false//页面所有的数据写在这里
         }
     },
     computed: mapState({
@@ -87,9 +86,9 @@ export default {
             console.log(key, keyPath);
         }
     },
-    mounted(){
-        this.active =this.$route.path
-    }
+    // mounted(){
+    //     console.log(this.loginInfo)
+    // }
 }
 </script>
 

@@ -2,38 +2,51 @@
     <div id="header">
         <div class="textLeft">
             <img src="../assets/logo.png">
-            <!-- <span class="sysTitle">{{systemShowName}}</span> -->
+            <span class="sysTitle">{{systemShowName}}</span>
         </div>
         <div class="textLeft">
             <div class="user">
-                <span v-if="page">系统安全统计</span>
-                <span v-if="!page">系统性能统计</span>
-                <!-- <i class="el-icon-arrow-down"></i>
+                <span>产品服务</span>
+                <i class="el-icon-arrow-down"></i>
                 <ul class="sysMenu">
                     <li v-for="(item,index) in sysProductIntegrate" @click="jumpUrlFun(item.jumpUrl)" :key="index">{{item.productName}}</li>
-                </ul> -->
+                </ul>
+            </div>
+        </div>
+        <div class="textRight">
+            <!-- <i class="el-icon-message"><a class="brige"></a></i>
+            <span>消息</span>
+            <i class="el-icon-location-outline"></i>
+            <span>公安局</span> -->
+            <div class="user">
+                <img style="width:25px;" src="../assets/images/login/admin.png">
+                <span style="margin-right:5px">{{user?user.userName:''}}</span>
+                <i class="el-icon-arrow-down"></i>
+                <ul class="sysMenu">
+                    <li @click="logout" style="text-align:center;width:104px">
+                        退出
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-// import { mapState } from 'vuex'
+import { mapState } from 'vuex'
 export default {
     name:'headerAssembly',
     data(){
         return{
-            page:true,
             test:1//页面所有的数据写在这里
         }
     },
-    // computed: mapState({
+    computed: mapState({
         // 箭头函数可使代码更简练
-        // sysProductIntegrate: state => state.loginInfo.sysProductIntegrate,
-        // user: state => state.loginInfo.user,
-        // systemShowName:state => state.systemShowName.systemShowName
-    // }),
-    
+        sysProductIntegrate: state => state.loginInfo.sysProductIntegrate,
+        user: state => state.loginInfo.user,
+        systemShowName:state => state.systemShowName.systemShowName
+    }),
     methods:{
         //页面所有的方法写在这里
         getData(){
@@ -51,11 +64,7 @@ export default {
         }
     },
     mounted(){
-        if(this.$route.name=='opsInfo'){
-            this.page=true
-        }else{
-            this.page=false
-        }
+        this.getData();//一定要在这里调用
     }
 }
 </script>
@@ -64,8 +73,8 @@ export default {
 /* 在这里写css样式 */
 /* 新建完了这个页面要去添加路由，在src/router.js里面添加，添加方法在readme里面 */
 #header{
-    height:100px;
-    background:#D9212F;
+    height:50px;
+    background:rgba(31,67,128,1);
     text-align: center;
     line-height: 50px;
     font-size:14px;
@@ -73,13 +82,12 @@ export default {
     font-weight:400;
     color:rgba(255,255,255,1);
     display: flex;
-    align-items: center;
     div{
         flex: 1;
         img{
-            width: 144px;
+            width: 32px;
             position: relative;
-            top: 5px;
+            top: 10px;
         }
         .sysTitle{
             font-size:16px;
@@ -91,7 +99,7 @@ export default {
         }
     }
     div:nth-child(1){
-        flex: 0.1
+        flex: 0.8
     }
     .textLeft{
         padding-left: 15px;
@@ -147,9 +155,9 @@ export default {
     position: relative;
     min-width: 104px;
     cursor: pointer;
-    span{
-        font-size: 18px;
-    }
+}
+.user:hover{
+    background-color: #000;
 }
 .user:hover .sysMenu{
     display: block;

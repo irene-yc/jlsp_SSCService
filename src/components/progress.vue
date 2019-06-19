@@ -64,34 +64,8 @@
             </div>
         </div>
         </div>
-        
-        <div v-if="status==='已完成'&&  myprop.finishTime==myprop.workStart">
-            
-        <div class="base_line" style="background-color:#50ca96;"></div>
-        <div class="cover_line" :style="{width:percent,backgroundColor:'#50ca96'}">
-        </div>
-        <div  class="time_detail_border ">
-            <div class="Tags" style="background-color:#50ca96">
-            </div>
-            <div class="time_text">实际完成时间</div>
-            <div  class="time_time">{{myprop.finishTime | splice}}</div>
-        </div>
-        <div class="time_detail_border center_circle">
-            <div class="time_text">计划开始时间</div>
-            <div  class="time_time">{{myprop.workStart | splice}}</div>
-            <div class="Tags" style="background-color:#00befb">
-            </div>
-        </div>
 
-        <div style="width:105px;left:100%;" class="time_detail_border">
-            <div class="Tags" style="background-color:#00befb">
-            </div>
-            <div class="time_text">计划完成时间</div>
-            <div  class="time_time">{{myprop.workEnd | splice}}</div>
-        </div>
-        </div>
-
-        <div v-if="status==='已完成'&& (myprop.finishTime<myprop.workStart  || myprop.finishTime==myprop.workStart)">
+        <div v-if="status==='已完成'&& myprop.finishTime<myprop.workStart">
             
         <div class="base_line" style="background-color:#50ca96;"></div>
         <div class="cover_line" :style="{width:percent,backgroundColor:'#50ca96'}">
@@ -355,7 +329,6 @@ export default {
     },
     filters:{
         splice(index){
-            // console.log(index)
             return index.substr(0,10)
         }
     }

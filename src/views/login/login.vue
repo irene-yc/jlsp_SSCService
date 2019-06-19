@@ -145,8 +145,15 @@ export default {
     }
   },
   created() {
+    // 从其他系统跳转过来
+    let token = this.$route.query.token;
+    if(token){
+      sessionStorage.setItem("accessToken", token);
+      this.$router.push('/')
+    }else{
       //在实例创建完成后被立即调用
       this.refreshCode();
+    }
   },
   mounted() {
      this.$http("get", "/sys/getSystemShowName").then(data => {

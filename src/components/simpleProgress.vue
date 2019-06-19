@@ -25,30 +25,6 @@
                 <div  class="time_time">{{finishedDate}}</div>
             </div>
         </div>
-         <div v-if="status===1 && finishedDate==planStartDate">
-            <div class="base_line" style="background-color:#50ca96;"></div>
-        <div class="cover_line" :style="{width:percent,backgroundColor:'#00befb'}">
-        </div>
-        <div class="time_detail_border">
-            <div class="Tags" style="background-color:#00befb">
-            </div>
-            <div class="time_text">计划开始时间</div>
-            <div  class="time_time">{{planStartDate}}</div>
-        </div>
-        <div class="time_detail_border center_circle">
-            <div class="time_text">实际完成时间</div>
-            <div  class="time_time">{{finishedDate}}</div>
-            <div class="Tags" style="background-color:#50ca96">
-            </div>
-        </div>
-        <div style="width:105px;left:100%;" class="time_detail_border">
-            <div class="Tags" style="background-color:#00befb">
-            </div>
-            <div class="time_text">计划完成时间</div>
-            <div  class="time_time">{{planEndDate}}</div>
-        </div>
-        </div>
-
         <div v-if="status===1&& finishedDate<planEndDate && finishedDate>planStartDate">
             <div class="base_line" style="background-color:#50ca96;"></div>
         <div class="cover_line" :style="{width:percent,backgroundColor:'#00befb'}">

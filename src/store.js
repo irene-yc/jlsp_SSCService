@@ -12,11 +12,7 @@ export default new Vuex.Store({
       roleId: [],
       userName: "",
     },
-    loginInfo:{
-      user:{
-        deptId:''
-      }
-    },
+    loginInfo:[],
     systemShowName:{}
   },
   getters: {

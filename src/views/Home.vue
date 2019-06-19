@@ -15,9 +15,9 @@ export default {
    
   },
   mounted(){
-    //  this.$http("get", "/sys/getSystemShowName").then(data => {
-    //    console.log(data)
-    //   });
+     this.$http("get", "/sys/getSystemShowName").then(data => {
+       console.log(data)
+      });
   }
 }
 </script>
