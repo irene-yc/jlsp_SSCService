@@ -119,9 +119,7 @@ export default {
 html,body{
   // background-color: #2296e8;
   background-color: #000;
-}
-body{
-  background: url('../../assets/images/timg.jpeg') no-repeat;
+   background: url('../../assets/images/timg.jpeg') no-repeat;
   background-size: 100% 100%;
 }
 table{
