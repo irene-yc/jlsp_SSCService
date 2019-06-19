@@ -26,23 +26,44 @@
             </el-table-column>
             <el-table-column
             align='center'
+            prop="id"
+            label="社会保障号码"
+            >
+            </el-table-column>
+            <el-table-column
+            align='center'
             prop="name"
-            label="审计报告名称"
+            label="姓名">
+            </el-table-column>
+            <el-table-column
+            align='center'
+            prop="bank"
+            label="所属银行"
+            
             >
             </el-table-column>
             <el-table-column
             align='center'
-            prop="auditDeptName"
-            label="被审计单位">
+            prop="service"
+            label="银行服务网点"
+            
+            >
             </el-table-column>
             <el-table-column
             align='center'
-            prop="createTime"
-            label="审计时间"
-            width="180"
+            prop="address"
+            label="网点地址"
+            
             >
             </el-table-column>
-             <el-table-column
+            <el-table-column
+            align='center'
+            prop="phone"
+            label="咨询电话"
+            
+            >
+            </el-table-column>
+             <!-- <el-table-column
             align='center'
             label="操作"
             width="150"
@@ -51,8 +72,16 @@
                 <el-button type="text" @click="showModal(scope.row.id)">查看</el-button>
                 <el-button type="text" @click="isDelete(scope.row.id)">删除</el-button>
             </template>
-            </el-table-column>
+            </el-table-column> -->
         </el-table>
+        <div style="border:1px solid red; width:700px;">
+          <el-steps :active="1">
+            <el-step title="步骤 1" description="a?"></el-step>
+            <el-step title="步骤 2" description="b?"></el-step>
+            <el-step title="步骤 3" description="这段就没那么长了"></el-step>
+          </el-steps>
+        </div>
+
         <el-dialog title="新建审计报告" :visible.sync="dialogFormVisible">
             <el-form :model="formData">
                 <el-form-item label="审计报告名称" :label-width="formLabelWidth">
@@ -189,7 +218,14 @@ export default {
         options: [],
         value:0,
         value1:[],
-        tableData: []
+        tableData: [{
+          id:'220303195209023430',
+          name:'艾成学',
+          service:'中国农业银行股份有限公司铁东支行',
+          bank:'农业银行',
+          address:'四平市铁东区中央东路1251号',
+          phone:'028-1234567',
+        }]
       }
     },
     computed: mapState({
@@ -431,7 +467,7 @@ export default {
       margin-top:20px
     }
     .demo-form-inline .el-input,.demo-form-inline .el-select{
-    width: 130px!important;
+    // width: 130px!important;
     }
 }
 
