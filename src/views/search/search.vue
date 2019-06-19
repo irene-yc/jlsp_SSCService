@@ -74,12 +74,20 @@
             </template>
             </el-table-column> -->
         </el-table>
-        <div style="border:1px solid red; width:700px;">
-          <el-steps :active="1">
-            <el-step title="步骤 1" description="a?"></el-step>
-            <el-step title="步骤 2" description="b?"></el-step>
-            <el-step title="步骤 3" description="这段就没那么长了"></el-step>
-          </el-steps>
+        <div style=" width:100%;">
+         <el-steps :active="2" align-center>
+          <el-step title="步骤1" description="数据上报"></el-step>
+          <el-step title="步骤2" description="批次筛选"></el-step>
+          <el-step title="步骤3" description="批次确认"></el-step>
+          <el-step title="步骤4" description="导出预开户"></el-step>
+          <el-step title="步骤5" description="预开户回盘"></el-step>
+          <el-step title="步骤6" description="导出制卡"></el-step>
+          <el-step title="步骤7" description="到达省卡中心"></el-step>
+          <el-step title="步骤8" description="制卡回盘"></el-step>
+          <el-step title="步骤9" description="省中心寄出"></el-step>
+          <el-step title="步骤10" description="市中心接收"></el-step>
+          <el-step title="步骤11" description="领卡启用"></el-step>
+        </el-steps>
         </div>
 
         <el-dialog title="新建审计报告" :visible.sync="dialogFormVisible">
@@ -466,9 +474,9 @@ export default {
       width: 100%;
       margin-top:20px
     }
-    .demo-form-inline .el-input,.demo-form-inline .el-select{
+    // .demo-form-inline .el-input,.demo-form-inline .el-select{
     // width: 130px!important;
-    }
+    // }
 }
 
 </style>

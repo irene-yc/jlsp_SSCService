@@ -3,76 +3,29 @@
     <div class="user-style">
         <div v-if="maintenance">
             <div>
-                <el-form :inline="true" :model="formInline" class="demo-form-inline" style="display:flex;justify-content:space-between">
-                    <el-form-item>
-                        <el-button type="primary" @click="addUser" size="mini"><i class="el-icon-circle-plus-outline"></i>新增</el-button>
-                    </el-form-item>
-                    <el-form-item label="搜索：">
-                        <el-input v-model="formInline.systemName" size="mini" placeholder="请输入名字搜索"></el-input>
-                        <el-button type="primary" @click="onSubmit" size="mini">查询</el-button>
-                    </el-form-item>
-                </el-form>
-            </div>
-            <div>
+                <el-button type="primary" @click="addUser" size="mini"><i class="el-icon-circle-plus-outline" style="margin-right:5px"></i>新增用户</el-button>
                 <el-table
                     ref="singleTable"
                     :data="tableData"
                     highlight-current-row
-                    style="width: 100%"
+                    style="width: 100%;margin-top:20px"
                     :row-class-name="column_class"
+                    border
                     >
                     <el-table-column
-                    property="id"
-                    label="社会保障号码"
+                    label="序号"
+                    type="index"
+                    align='center'
+                    width="50"
                     >
                     </el-table-column>
                     <el-table-column
                     property="name"
-                    label="姓名"
+                    label="用户名"
+                    align='center'
+
                     >
                     </el-table-column>
-                    <el-table-column
-                    property="bank"
-                    label="所属银行"
-                    >
-                   
-                    <template slot-scope="scope">
-                        {{scope.row.bank||'--'}}
-                    </template>
-                    </el-table-column>
-                    <el-table-column
-                    property="address"
-                    label="银行服务网点"
-                    >
-                    <template slot-scope="scope">
-                        <div v-if="scope.row.address">
-                            {{scope.row.address}}
-                        </div>
-                        <div v-else>--</div>
-                    </template>
-                    </el-table-column>
-                    <el-table-column
-                    property="time"
-                    label="录入时间">
-                    <template slot-scope="scope">
-                        <div v-if="scope.row.time">
-                            {{scope.row.time|spliceTimeString}}
-                        </div>
-                        <div v-else>--</div>
-                    </template>
-                    </el-table-column>
-                    <el-table-column
-                    property="status"
-                    label="账户状态"
-                    >
-                    <!-- <template slot-scope="scope">
-                        <div v-if="scope.row.status==-1">--</div>
-                        <div v-else-if="scope.row.status==0">已保存</div>
-                        <div v-else-if="scope.row.status==1">已提交</div>
-                        <div v-else>--</div>
-                    </template> -->
-                    </el-table-column>
-                
                     <el-table-column
                         fixed="right"
                         label="操作"
@@ -401,82 +354,29 @@
                 </el-dialog>
 
                 <!-- 新增运维信息 -->
-                <el-dialog title="新增运维信息" @close="getData()" :visible.sync="dialogFormVisible" class="demoDialog"  width="900px">
+                <el-dialog title="添加用户" :visible.sync="dialogFormVisible" class="demoDialog"  width="500px">
                     <el-form :inline="true" :model="opsForm">
-                         <el-form-item label="系统状态" :label-width="formLabelWidth">
-                            <el-select v-model="opsstatus" disabled size="small">
-                                <el-option v-for="i in statusList" :label="i.name" :value="i.value" :key="i.value"></el-option>
-                            </el-select>
+                         <el-form-item label="用户名" :label-width="formLabelWidth">
+                            <el-input v-model="username"></el-input>
                         </el-form-item>
-                        <el-form-item label="运维周期" :label-width="formLabelWidth" class="sec_select">
-                            <!-- <el-input v-model="opsForm.period" style="width:100px" size="small" ></el-input> -->
-                            <el-input-number v-model="opsForm.period" :step="1" :min="0" style="width:120px" size="small"></el-input-number>
-                            <el-select  v-model="opsForm.periodUnit" size="small" style="width:100px" >
-                                <el-option label="年" value="Y" ></el-option>
-                                <el-option label="月" value="M" ></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="本周期运维时间" :label-width="formLabelWidth">
-                            <el-date-picker
-                                v-model="valueTime"
-                                type="daterange"
-                                range-separator="至"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期">
-                            </el-date-picker>   
-                        </el-form-item>
-                        <el-form-item label="运维模式" :label-width="formLabelWidth">
-                            <el-select v-model="opsForm.model" placeholder="请选择运维模式" size="small">
-                                <el-option  v-for="i in allModal" :label="i.dictName" :value="i.id" :key="i.id"></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="运维费用" :label-width="formLabelWidth">
-                            <el-input-number v-model="opsForm.cost" :precision="2" :min="0" :step="100" size="small" style="width:250px;"></el-input-number>元
-                            <!-- <el-input v-model="opsForm.cost" placeholder="请输入运维费用" autocomplete="off" size="small"></el-input> -->
-                        </el-form-item>
-                        <el-form-item label="运维费来源" :label-width="formLabelWidth">
-                            <el-input v-model="opsForm.costSource" placeholder="请输入运维费来源" autocomplete="off" size="small"></el-input>
-                        </el-form-item>
-                        <el-form-item label="运维单位名称" :label-width="formLabelWidth">
-                            <el-input v-model="opsForm.companyName" placeholder="请输入运维单位名称" autocomplete="off" size="small"></el-input>
-                        </el-form-item>
-                        <el-form-item label="运维单位联系人" :label-width="formLabelWidth">
-                            <el-input v-model="opsForm.contactName" placeholder="请输入运维单位联系人" autocomplete="off" size="small"></el-input>
-                        </el-form-item>
-                        <el-form-item label="运维单位联系电话" :label-width="formLabelWidth">
-                            <el-input v-model="opsForm.contactPhone" placeholder="请输入运维单位联系电话" autocomplete="off" size="small"></el-input>
-                        </el-form-item>
-                         <el-form-item label="与运维单位是否签订运维保密协议" :label-width="formLabelWidth" class="lineLabel">
-                                <el-radio v-model="opsForm.isSecret" label="Y">是</el-radio>
-                                <el-radio v-model="opsForm.isSecret" label="N">否</el-radio>
-                        </el-form-item>
-                        <el-form-item label="暂停使用时间" :label-width="formLabelWidth">
-                            <!-- <el-input v-model="opsForm.stopTime" placeholder="请输入暂停使用时间" autocomplete="off" size="small"></el-input>
-                             -->
-                             <el-date-picker
-                            v-model="opsForm.stopTime"
-                            type="date"
-                            placeholder="选择日期">
-                            </el-date-picker>
-                        </el-form-item>
-                        <el-form-item label="暂停使用原因" :label-width="formLabelWidth" class="textareaW">
-                            <el-input v-model="opsForm.stopReason" placeholder="请输入暂停使用原因" autocomplete="off"  type="textarea" :rows="2" size="small"></el-input>
+                        <el-form-item label="密码" :label-width="formLabelWidth">
+                            <el-input v-model="password" type="password"></el-input>
                         </el-form-item>
                     </el-form>
                     <div slot="footer" class="dialog-footer">
-                        <el-button @click="getData(),dialogFormVisible = false" size="small">取 消</el-button>
+                        <el-button @click="dialogFormVisible = false" size="small">取 消</el-button>
                         <el-button type="primary" @click="onOpsOk" size="small" style="margin-left:30px;">确 定</el-button>
                     </div>
                 </el-dialog>
-
+                <el-pagination
+                background
+                layout="prev, pager, next"
+                :total="total"
+                @current-change="changePage"
+                >
+                </el-pagination>
             </div>
-            <el-pagination
-            background
-            layout="prev, pager, next"
-            :total="total"
-            @current-change="changePage"
-            >
-            </el-pagination>
+            
         </div>
     </div>
 </template>
