@@ -2,7 +2,7 @@
     <div id="header">
         <div class="textLeft">
             <img src="../assets/logo.png">
-            <span class="sysTitle">{{systemShowName?systemShowName:'后台管理系统'}}</span>
+            <span class="sysTitle">{{systemShowName?systemShowName:'四平市社会保障卡信息查询服务后台管理系统'}}</span>
         </div>
         <div class="textRight">
             <!-- <i class="el-icon-message"><a class="brige"></a></i>

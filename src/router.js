@@ -36,7 +36,7 @@ export default new Router({
         {
           path: 'user',
           name: 'user',
-          meta:'用户设置',
+          meta:'用户管理',
           component: () => import('./views/user/user.vue')
         },
       ]

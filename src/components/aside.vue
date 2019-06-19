@@ -18,7 +18,7 @@
             </el-menu-item>
             <el-menu-item :index="'/basic/user'">
                 <i class="iconfont iconxiangmujianshejinzhan3"></i>
-                <span slot="title">用户设置</span>
+                <span slot="title">用户管理</span>
             </el-menu-item>
             <!-- <template v-for="item in treeMenus">
                 <el-menu-item :key="item.id" v-if="item.children.length===0" :index="item.sysMenu.url">

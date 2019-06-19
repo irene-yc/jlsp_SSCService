@@ -42,6 +42,9 @@
           <td>xxxxxxxxxxxxxxxxxxxxx</td>
         </tr>
       </table>
+      <div v-if="!search" class="error">
+        <span>您当前的制卡进度为：到达省卡中心！/您的信息待采集，请到四平市政务大厅办理信息采集</span>
+      </div>
         <!-- <div style="border:1px solid red; width:700px;">
           <el-steps :active="1">
             <el-step title="步骤 1" description="a?"></el-step>
@@ -103,7 +106,12 @@ export default {
   margin-top: 10px;
 }
 html,body{
-  background-color: #2296e8;
+  // background-color: #2296e8;
+  background-color: #000;
+}
+body{
+  background: url('../../assets/images/timg.jpeg') no-repeat;
+  background-size: 100% 100%;
 }
 table{
   width: 80%;
@@ -117,6 +125,9 @@ table{
     text-align: left;
     padding: 10px;
   }
+}
+.error{
+  padding: 0 0 30px 0;
 }
 </style>
 
