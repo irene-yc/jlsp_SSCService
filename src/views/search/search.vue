@@ -3,16 +3,16 @@
     <div class="special-audit">
       <el-row>
         <div class="title">
-          社保查询
+          社会保障卡信息查询
         </div>
       </el-row>
       <el-row class="searchBox">
         <el-col :span="20">
-          <el-input v-model="auditName" placeholder="请输入社会保障号码（即身份证号）"></el-input>
+          <el-input v-model="auditName" placeholder="请输入身份证号"></el-input>
         </el-col>
         <el-col :span="4">
            <el-button type="primary" @click="searchHandle">
-          搜索
+          查 询
           </el-button>
         </el-col>
       </el-row>
