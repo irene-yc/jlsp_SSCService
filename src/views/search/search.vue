@@ -11,9 +11,7 @@
           <el-input v-model="auditName" placeholder="请输入身份证号"></el-input>
         </div>
         <div>
-           <el-button type="primary" @click="searchHandle">
-          查 询
-          </el-button>
+          <el-button type="primary" @click="searchHandle">查 询</el-button>
         </div>
       </el-row>
       <table v-if="search">
@@ -44,6 +42,9 @@
       </table>
       <div v-if="!search" class="error">
         <span>您当前的制卡进度为：到达省卡中心！<br/>您的信息待采集，请到四平市政务大厅办理信息采集</span>
+      </div>
+      <div v-if="search" class="esc">
+          <el-button type="primary" @click="escOut" size="small">退 出</el-button>
       </div>
         <!-- <div style="border:1px solid red; width:700px;">
           <el-steps :active="1">
@@ -81,6 +82,9 @@ export default {
     methods:{
       searchHandle(){
         this.search = true;
+      },
+      escOut(){
+        this.search = false;
       }
     },
     
@@ -97,7 +101,7 @@ export default {
     padding: 20px 20px;
     border-radius: 5px;
     position: relative;
-    top: 150px;
+    top: 120px;
     .search-handle{
         display:flex;
         align-items:center
@@ -150,6 +154,9 @@ table{
 .error{
   padding: 0 0 30px 0;
 }
+.esc{
+  margin: 10px 0;
+}
 @media (max-width: 500px){
     html,body{
         background: #000;
@@ -164,7 +171,7 @@ table{
     }
     .searchBox{
       width: 90%;
-      margin: 40px auto;
+      margin: 20px auto;
       display: block;
       div:nth-child(2){
        padding: 0; 
@@ -176,6 +183,10 @@ table{
     }
     table{
       width: 100%;
+    }
+    .esc button{
+      width: 90%;
+      margin: 20px 0;
     }
 }
 </style>
