@@ -38,13 +38,7 @@ export default {
 
   },
   mounted(){
-     this.$http("get", "/user/loginInfo").then(data => {
-        this.$store.commit('setloginInfo',data.data.object);
-      });
-      this.$http("get", "/sys/getSystemShowName").then(data => {
-       this.systemShowName = data.data.object.systemShowName
-        this.$store.commit('setSystemShowName',data.data.object);
-      });
+     
   }
 }
 </script>
