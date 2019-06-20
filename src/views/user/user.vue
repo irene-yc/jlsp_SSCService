@@ -82,9 +82,10 @@
                     </div>
                 </el-dialog>
                  <el-pagination
+                @size-change="handleSizeChange"
                 @current-change="changePage"
-                :current-page="currentPage"
-                :page-size="10"
+                :current-page="current"
+                :page-size="pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="total">
             </el-pagination>
@@ -101,7 +102,7 @@ export default {
     name:'user',
     data(){
         return{
-        currentPage:1,
+        pageSize:10,
         editInfo:false,
         modalTitle:'',
         userInfo:{
@@ -122,18 +123,7 @@ export default {
         },
             current:1,
             total:1,
-            tableData: [
-              { 
-                phone:"13333333333",
-                id:'123456789',
-                name:'张三',
-                age:'18',
-                bank:'农业银行',
-                address:'中国农业银行股份有限公司铁东支行',
-                time:'2019-6-18',
-                status:'禁用'
-              }
-            ],
+            tableData: [],
             dialogVisible:false,
             maintenance:true,
             dialogFormVisible: false,
@@ -150,7 +140,7 @@ export default {
         // if(this.routeId){
         //     this.updateDetails(this.routeId)
         // }
-        // this.getData();
+        this.getData();
     },
     methods:{
         ifdel(){
@@ -179,7 +169,12 @@ export default {
           //清空
           this.tableData = []
           this.current = index
-        //   this.getData() 
+          this.getData() 
+        },
+        handleSizeChange(val) {
+         this.pageSize = val
+          this.current = 1
+         this.getData
         },
         onok(formName){
              this.$refs[formName].validate((valid) => {
@@ -215,16 +210,15 @@ export default {
         getData(){
             // 初始列表
             let obj = {
-                ...this.formInline,
+                // ...this.formInline,
                 currentPage:this.current,
-                pageSize:10,
-                id:this.routeId||null
+                pageSize:this.pageSize,
                 }
-            obj.deptId = [obj.deptId[obj.deptId.length-1]]
-            this.$http("get", `/infoBasic/list?${stringify(obj)}`).then(data => {
+            this.$http("get", `/user/list?${stringify(obj)}`).then(data => {
+                console.log(data)
                 if(data.code==200){
-                    this.tableData = data.data.page.records
-                    this.total = data.data.page.total
+                    this.tableData = data.data.records
+                    this.total = data.data.total
                 }
             });
             

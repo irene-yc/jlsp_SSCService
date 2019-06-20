@@ -11,7 +11,7 @@
             <span>公安局</span> -->
             <div class="user">
                 <img style="width:25px;" src="../assets/images/login/admin.png">
-                <span style="margin-right:5px">{{user?user.userName:''}}</span>
+                <span style="margin-right:5px">{{user?user.nickname:''}}</span>
                 <i class="el-icon-arrow-down"></i>
                 <ul class="sysMenu">
                     <li @click="logout" style="text-align:center;width:104px">
@@ -34,8 +34,7 @@ export default {
     },
     computed: mapState({
         // 箭头函数可使代码更简练
-        sysProductIntegrate: state => state.loginInfo.sysProductIntegrate,
-        user: state => state.loginInfo.user,
+        user: state => state.userInfo,
         systemShowName:state => state.systemShowName.systemShowName
     }),
     methods:{

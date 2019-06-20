@@ -7,10 +7,9 @@ export default new Vuex.Store({
   state: {
     // token:'',
     userInfo:{
-      regionCode: "",
-      regionName: "",
-      roleId: [],
-      userName: "",
+      nickname: "",
+      phone: "",
+      username: "",
     },
     loginInfo:[],
     systemShowName:{}
@@ -26,9 +25,9 @@ export default new Vuex.Store({
   },
   mutations: {
     setUserInfo(state,data){
-      state.userInfo=data.user;
-      sessionStorage.setItem("user", JSON.stringify(data.user));
-      sessionStorage.setItem("accessToken", data.tokenMap.accessToken);
+      state.userInfo=data;
+      // sessionStorage.setItem("user", JSON.stringify(data.user));
+      // sessionStorage.setItem("accessToken", data.tokenMap.accessToken);
     },
     setloginInfo(state,data){
       state.loginInfo = data;
