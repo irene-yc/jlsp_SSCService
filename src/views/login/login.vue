@@ -11,13 +11,13 @@
             <el-tab-pane label="账户密码登录" name="content" class="login-main">
                 <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm"  class="demo-ruleForm">
                     <el-form-item prop="account">
-                        <el-input type="primary" prefix-icon="el-icon-search" v-model.trim="ruleForm.account" autocomplete="off"></el-input>
+                        <el-input type="primary" prefix-icon="el-icon-search" v-model.trim="ruleForm.account" autocomplete="off" placeholder="请输入用户名"></el-input>
                     </el-form-item>
                     <el-form-item prop="password">
-                        <el-input type="password" prefix-icon="el-icon-search" v-model="ruleForm.password" autocomplete="off"></el-input>
+                        <el-input type="password" prefix-icon="el-icon-search" v-model="ruleForm.password" autocomplete="off" placeholder="请输入密码"></el-input>
                     </el-form-item>
                     <el-form-item prop="verify">
-                        <el-input type="primary" @keyup.enter.native="submitForm('ruleForm')" v-model="ruleForm.verify" autocomplete="off" style="width:150px;margin-right:40px"></el-input>
+                        <el-input type="primary" @keyup.enter.native="submitForm('ruleForm')" v-model="ruleForm.verify" autocomplete="off" style="width:150px;margin-right:40px" placeholder="请输入验证码"></el-input>
                         <div  style="height:40px;width:160px">
                           <img :src="codeSrc" alt="点击刷新图片" style="height:40px;width:160px" @click="refreshVerify">
                         </div>
