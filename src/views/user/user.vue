@@ -3,7 +3,7 @@
     <div class="user-style">
         <div v-if="maintenance">
             <div>
-                <el-button type="primary" @click="dialogFormVisible = true" size="mini"><i class="el-icon-circle-plus-outline" style="margin-right:5px"></i>新增用户</el-button>
+                <el-button type="primary" @click="initadd" size="mini"><i class="el-icon-circle-plus-outline" style="margin-right:5px"></i>新增用户</el-button>
                 <el-table
                     ref="singleTable"
                     :data="tableData"
@@ -19,14 +19,14 @@
                     >
                     </el-table-column>
                     <el-table-column
-                    property="id"
-                    label="账户"
+                    property="username"
+                    label="用户名"
                     align='center'
 
                     >
                     </el-table-column>
                     <el-table-column
-                    property="name"
+                    property="nickname"
                     label="昵称"
                     align='center'
 
@@ -44,22 +44,25 @@
                         label="操作"
                         width="200">
                         <template slot-scope="scope">
-                            <el-button @click="editInfo = true,modalTitle='修改信息'" type="text" size="small">修改信息</el-button>
+                            <el-button @click="editInfo = true,modalTitle='修改信息',nowUser = scope.row" type="text" size="small">修改信息</el-button>
                             <el-button type="text" @click="ifdel(scope.row.id)" size="small">删除用户</el-button>
-                            <el-button @click="editInfo = true,modalTitle='修改密码'" type="text" size="small">密码修改</el-button>
+                            <el-button @click="editInfo = true,modalTitle='修改密码',nowUser = scope.row" type="text" size="small">密码修改</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
                 <el-dialog title="添加用户" :visible.sync="dialogFormVisible" class="demoDialog"  width="500px">
                     <el-form :inline="true" ref="ruleAdd" :model="userInfo" :rules="addUserRules">
-                        <el-form-item label="账户" prop="id" :label-width="formLabelWidth">
-                            <el-input v-model="userInfo.id"></el-input>
+                        <el-form-item label="账户" prop="username" :label-width="formLabelWidth">
+                            <el-input v-model="userInfo.username"></el-input>
                         </el-form-item>
-                         <el-form-item label="昵称" prop="userName" :label-width="formLabelWidth">
-                            <el-input v-model="userInfo.userName"></el-input>
+                         <el-form-item label="昵称" prop="nickname" :label-width="formLabelWidth">
+                            <el-input v-model="userInfo.nickname"></el-input>
                         </el-form-item>
-                        <el-form-item label="密码" prop="passWord" :label-width="formLabelWidth">
-                            <el-input v-model="userInfo.passWord" type="password"></el-input>
+                        <el-form-item label="密码" prop="password" :label-width="formLabelWidth">
+                            <el-input v-model="userInfo.password" type="password"></el-input>
+                        </el-form-item>
+                        <el-form-item label="电话" prop="phone" :label-width="formLabelWidth">
+                            <el-input v-model="userInfo.phone" type="password"></el-input>
                         </el-form-item>
                     </el-form>
                     <div slot="footer" class="dialog-footer">
@@ -67,24 +70,28 @@
                         <el-button type="primary" @click="addUser" size="small" style="margin-left:30px;">确 定</el-button>
                     </div>
                 </el-dialog>
-                <el-dialog :title="modalTitle" :visible.sync="editInfo" class="demoDialog"  width="500px">
-                    <el-form :inline="true" ref="ruleAdd" :model="userInfo" :rules="addUserRules" style="padding-top:20px">
-                         <el-form-item label="昵称" prop="userName" v-if="modalTitle=='修改信息'" :label-width="formLabelWidth">
-                            <el-input v-model="userInfo.userName"></el-input>
+                <el-dialog :title="modalTitle" :visible.sync="editInfo" class="demoDialog"  width="500px" @close="getData">
+                    <el-form :inline="true" ref="rulechange" :model="userInfo"  style="padding-top:20px">
+                         <el-form-item label="昵称" prop="nickname" v-if="modalTitle=='修改信息'" :label-width="formLabelWidth">
+                            <el-input v-model="nowUser.nickname"></el-input>
                         </el-form-item>
-                        <el-form-item label="密码" prop="passWord"  v-if="modalTitle=='修改密码'" :label-width="formLabelWidth">
-                            <el-input v-model="userInfo.passWord" type="password"></el-input>
+                        <el-form-item label="电话" prop="phone" v-if="modalTitle=='修改信息'" :label-width="formLabelWidth">
+                            <el-input v-model="nowUser.phone"></el-input>
+                        </el-form-item>
+                        <el-form-item label="密码" prop="password"  v-if="modalTitle=='修改密码'" :label-width="formLabelWidth">
+                            <el-input v-model="nowUser.password" type="password"></el-input>
                         </el-form-item>
                     </el-form>
                     <div slot="footer" class="dialog-footer">
                         <el-button @click="editInfo = false" size="small">取 消</el-button>
-                        <el-button type="primary" @click="addUser" size="small" style="margin-left:30px;">确 定</el-button>
+                        <el-button type="primary" @click="editUser" size="small" style="margin-left:30px;">确 定</el-button>
                     </div>
                 </el-dialog>
                  <el-pagination
+                @size-change="handleSizeChange"
                 @current-change="changePage"
-                :current-page="currentPage"
-                :page-size="10"
+                :current-page="current"
+                :page-size="pageSize"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="total">
             </el-pagination>
@@ -95,45 +102,37 @@
 </template>
 
 <script>
+import Md5 from 'md5';
 import { stringify } from 'querystring';
 import { formatDate } from '../../util/date.js';
 export default {
     name:'user',
     data(){
         return{
-        currentPage:1,
+        nowUser:{},
+        pageSize:10,
         editInfo:false,
         modalTitle:'',
         userInfo:{
-            id:"",
-            userName:"",
-            passWord:"",
+            username:"",
+            nickname:"",
+            password:"",
+            phone:"",
         },
         addUserRules:{
-            id:[
+            username:[
                 { required: true, message: '请输入账户', trigger: 'change' },
             ],
-            userName:[
+            nickname:[
                 { required: true, message: '请输入昵称', trigger: 'change' },
             ],
-            passWord:[
+            password:[
                 { required: true, message: '请输入密码', trigger: 'change' },
             ],
         },
             current:1,
             total:1,
-            tableData: [
-              { 
-                phone:"13333333333",
-                id:'123456789',
-                name:'张三',
-                age:'18',
-                bank:'农业银行',
-                address:'中国农业银行股份有限公司铁东支行',
-                time:'2019-6-18',
-                status:'禁用'
-              }
-            ],
+            tableData: [],
             dialogVisible:false,
             maintenance:true,
             dialogFormVisible: false,
@@ -150,19 +149,53 @@ export default {
         // if(this.routeId){
         //     this.updateDetails(this.routeId)
         // }
-        // this.getData();
+        this.getData();
     },
     methods:{
-        ifdel(){
+        editUser(){
+            let pwd = ''
+             this.nowUser.password?pwd = Md5(this.nowUser.password) :''
+             this.$http("post", `/user/update`,{
+                        ...this.nowUser,
+                        password:pwd || null
+                     }).then(data => {
+                        if(data.code==200){
+                            this.$message.success(data.msg)
+                            this.editInfo = false
+                            this.getData()
+                        }else{
+                            this.$message.warning(data.msg)
+                        }
+                    });
+        },
+        initadd(){
+            this.userInfo={
+                            id:"",
+                            nickname:"",
+                            password:"",
+                            phone:"",
+                        },
+            this.dialogFormVisible = true
+        },
+        delUser(id){
+            this.$http("post", `/user/deleteOne`,{
+                        id
+                     }).then(data => {
+                        if(data.code==200){
+                            this.$message.success(data.msg)
+                            this.getData()
+                        }else{
+                            this.$message.warning(data.msg)
+                        }
+                    });
+        },
+        ifdel(id){
             this.$confirm('确定删除用户吗?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
             }).then(() => {
-            this.$message({
-                type: 'success',
-                message: '删除成功!'
-            });
+                this.delUser(id)
             }).catch(() => {
             this.$message({
                 type: 'info',
@@ -172,14 +205,36 @@ export default {
         },
         addUser(){
             this.$refs['ruleAdd'].validate((valid) => {
-                 valid?console.log('添加成功！'):console.log('请先完善表单！')
+                 if(valid){
+                     this.$http("post", `/user/create`,{
+                         ...this.userInfo,
+                        password:Md5(this.userInfo.password)
+                     }).then(data => {
+                        console.log(data)
+                        if(data.code==200){
+                            this.$message.success(data.msg)
+                            this.dialogFormVisible = false
+                            this.getData()
+                        }else{
+                            this.$message.warning(data.msg)
+                        }
+                    });
+                 }else{
+                        this.$message.warning('请先完成必填内容')
+
+                 }
             })
         },
         changePage(index){
           //清空
           this.tableData = []
           this.current = index
-        //   this.getData() 
+          this.getData() 
+        },
+        handleSizeChange(val) {
+         this.pageSize = val
+         this.current = 1
+         this.getData()
         },
         onok(formName){
              this.$refs[formName].validate((valid) => {
@@ -215,16 +270,15 @@ export default {
         getData(){
             // 初始列表
             let obj = {
-                ...this.formInline,
+                // ...this.formInline,
                 currentPage:this.current,
-                pageSize:10,
-                id:this.routeId||null
+                pageSize:this.pageSize,
                 }
-            obj.deptId = [obj.deptId[obj.deptId.length-1]]
-            this.$http("get", `/infoBasic/list?${stringify(obj)}`).then(data => {
+            this.$http("get", `/user/list?${stringify(obj)}`).then(data => {
+                console.log(data)
                 if(data.code==200){
-                    this.tableData = data.data.page.records
-                    this.total = data.data.page.total
+                    this.tableData = data.data.records
+                    this.total = data.data.total
                 }
             });
             

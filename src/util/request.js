@@ -38,11 +38,12 @@ export const iHttp = (type, url, data = {}, headersV = cont) => {
         "Content-Type": headersV
       }
     };
-    url==='/login' //如果是登录接口的时候参数用params传递
-    ?(init["params"] = data)
-    :type === "get" 
-      ? (init["params"] = data) 
-      : (init["data"] = data);
+    // url==='/login'
+    // ?(init["params"] = data)
+    // :type === "get" 
+    //   ? (init["params"] = data) 
+    //   : (init["data"] = data);
+    init["params"] = data
     axios(init)
       .then(
         res => {
