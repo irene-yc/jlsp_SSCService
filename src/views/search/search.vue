@@ -204,8 +204,8 @@ table{
       div:nth-child(2){
        padding: 0; 
        button{
-         margin-top: 20px;
-        width: 100%;
+         margin: 20px 0;
+         width: 100%;
       }
       }
     }
@@ -223,6 +223,9 @@ table{
     .esc button{
       width: 90%;
       margin: 20px 0;
+    }
+    .error span{
+      font-size: 12px;
     }
 }
 </style>
