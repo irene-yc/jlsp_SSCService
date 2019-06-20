@@ -21,9 +21,9 @@
       width="50">
     </el-table-column>
     <el-table-column
-      prop="date"
+      prop="id"
       label="社会保障号码"
-      width="150">
+      width="180">
     </el-table-column>
     <el-table-column
       prop="name"
@@ -31,22 +31,22 @@
       width="120">
     </el-table-column>
     <el-table-column
-      prop="province"
+      prop="bankName"
       label="所属银行"
       width="120">
     </el-table-column>
     <el-table-column
-      prop="city"
+      prop="bankOutlets"
       label="银行服务网点"
       width="120">
     </el-table-column>
     <el-table-column
-      prop="address"
+      prop="bankOutletsAddress"
       label="网点地址"
     >
     </el-table-column>
     <el-table-column
-      prop="zip"
+      prop="advicePhone"
       label="咨询电话"
       width="120">
     </el-table-column>
@@ -54,11 +54,11 @@
   <el-pagination
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
-    :current-page="currentPage4"
-    :page-sizes="[100, 200, 300, 400]"
-    :page-size="100"
+    :current-page="currentPage"
+    :page-sizes="[10, 20, 30, 40]"
+    :page-size="pageSize"
     layout="total, sizes, prev, pager, next, jumper"
-    :total="400">
+    :total="total">
   </el-pagination>
 </div>
 </template>
@@ -106,26 +106,40 @@ export default {
           address: 'xxxxxxxxxxxxxxxxxxxxxxxx',
           zip: 200333
         }],
-        currentPage4: 4,
-        input:''
+      currentPage: 1,
+      input:'',
+      total:0,
+      pageSize:10
     };
   },
   methods: {
+    init(){
+          this.$http("get", "/list",{currentPage:this.currentPage,pageSize:this.pageSize}).then(data => {
+          this.tableData = data.data.records;
+          this.currentPage = data.data.current;
+          this.total = data.data.total;
+          this.pageSize = data.data.size;
+        });
+    },
     handleClick(row) {
         console.log(row);
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+     this.pageSize = val;
+     this.currentPage = 1;
+     this.init()      
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+     this.currentPage = val;
+     console.log(this.pageSize)
+     this.init()
     }
   },
   created() {
     
   },
   mounted() {
-     
+    this.init();
   }
 };
 </script>
