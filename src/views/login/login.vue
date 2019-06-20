@@ -120,13 +120,13 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          this.$http("post", "/data/login",{
-            "username":this.ruleForm.account,
+          this.$http("post", "/login",{
+            "userName":this.ruleForm.account,
             "password":Md5(this.ruleForm.password)
         }).then(response => {
          if(response.code==200){
             this.$message.success('登录成功')
-            this.$store.commit('setUserInfo',response.data.object)
+            // this.$store.commit('setUserInfo',response.data.object)
             this.$router.push('/')
         }else{
             this.$message.warning(response.msg)
@@ -156,10 +156,10 @@ export default {
     }
   },
   mounted() {
-     this.$http("get", "/sys/getSystemShowName").then(data => {
-       this.systemShowName = data.data.object.systemShowName
-        this.$store.commit('setSystemShowName',data.data.object);
-     });
+    //  this.$http("get", "/sys/getSystemShowName").then(data => {
+    //    this.systemShowName = data.data.object.systemShowName
+    //     this.$store.commit('setSystemShowName',data.data.object);
+    //  });
   }
 };
 </script>

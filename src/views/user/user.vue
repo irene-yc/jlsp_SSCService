@@ -44,12 +44,9 @@
                         label="操作"
                         width="200">
                         <template slot-scope="scope">
-                            <!-- <el-button @click="handleClick(scope.row.id)" type="text" size="small">查看</el-button>
-                            <el-button v-if="!(scope.row.status==1&&scope.row.systemStatus==2)" type="text" size="small" @click="updateDetails(scope.row.id)">完善信息</el-button>
-                            <el-button type="text" size="small" @click="$router.push(`opsInfo/${scope.row.id}`)">运维信息</el-button> -->
-                            <el-button @click="handleClick(scope.row.id)" type="text" size="small">修改信息</el-button>
+                            <el-button @click="editInfo = true,modalTitle='修改信息'" type="text" size="small">修改信息</el-button>
                             <el-button type="text" @click="ifdel(scope.row.id)" size="small">删除用户</el-button>
-                            <el-button @click="handleClick(scope.row.id)" type="text" size="small">密码修改</el-button>
+                            <el-button @click="editInfo = true,modalTitle='修改密码'" type="text" size="small">密码修改</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -70,13 +67,27 @@
                         <el-button type="primary" @click="addUser" size="small" style="margin-left:30px;">确 定</el-button>
                     </div>
                 </el-dialog>
-                <el-pagination
-                background
-                layout="prev, pager, next"
-                :total="total"
+                <el-dialog :title="modalTitle" :visible.sync="editInfo" class="demoDialog"  width="500px">
+                    <el-form :inline="true" ref="ruleAdd" :model="userInfo" :rules="addUserRules" style="padding-top:20px">
+                         <el-form-item label="昵称" prop="userName" v-if="modalTitle=='修改信息'" :label-width="formLabelWidth">
+                            <el-input v-model="userInfo.userName"></el-input>
+                        </el-form-item>
+                        <el-form-item label="密码" prop="passWord"  v-if="modalTitle=='修改密码'" :label-width="formLabelWidth">
+                            <el-input v-model="userInfo.passWord" type="password"></el-input>
+                        </el-form-item>
+                    </el-form>
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click="editInfo = false" size="small">取 消</el-button>
+                        <el-button type="primary" @click="addUser" size="small" style="margin-left:30px;">确 定</el-button>
+                    </div>
+                </el-dialog>
+                 <el-pagination
                 @current-change="changePage"
-                >
-                </el-pagination>
+                :current-page="currentPage"
+                :page-size="10"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="total">
+            </el-pagination>
             </div>
             
         </div>
@@ -90,6 +101,9 @@ export default {
     name:'user',
     data(){
         return{
+        currentPage:1,
+        editInfo:false,
+        modalTitle:'',
         userInfo:{
             id:"",
             userName:"",
@@ -165,7 +179,7 @@ export default {
           //清空
           this.tableData = []
           this.current = index
-          this.getData()
+        //   this.getData() 
         },
         onok(formName){
              this.$refs[formName].validate((valid) => {

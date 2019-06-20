@@ -2,7 +2,7 @@ import router from "@/router";
 import axios from "axios";
 
 // axios.defaults.baseURL = ''; // 配置axios请求的地址
-//配置发送请求前的拦截器.可以设置带登录用户信息
+// 配置发送请求前的拦截器.可以设置带登录用户信息
 axios.interceptors.request.use(
   config => {
     let accessToken = sessionStorage.getItem('accessToken');
@@ -32,14 +32,17 @@ export const iHttp = (type, url, data = {}, headersV = cont) => {
   return new Promise((resolve, reject) => {
     let init = {
       method: type,
-      url: '/info'+url,
+      // url: '/info'+url,
+      url: url,
       headers: {
         "Content-Type": headersV
       }
     };
-
-    type === "get" ? (init["params"] = data) : (init["data"] = data);
-
+    url==='/login' //如果是登录接口的时候参数用params传递
+    ?(init["params"] = data)
+    :type === "get" 
+      ? (init["params"] = data) 
+      : (init["data"] = data);
     axios(init)
       .then(
         res => {
