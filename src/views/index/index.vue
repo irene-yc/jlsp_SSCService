@@ -38,7 +38,7 @@
     <el-table-column
       prop="bankOutlets"
       label="银行服务网点"
-      width="120">
+      width="200">
     </el-table-column>
     <el-table-column
       prop="bankOutletsAddress"

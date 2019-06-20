@@ -8,7 +8,7 @@
       </el-row>
       <el-row class="searchBox">
         <div>
-          <el-input v-model="auditName" placeholder="请输入身份证号"></el-input>
+          <el-input v-model="id" placeholder="请输入身份证号"></el-input>
         </div>
         <div>
           <el-button type="primary" @click="searchHandle">查 询</el-button>
@@ -17,31 +17,31 @@
       <table v-if="search">
         <tr>
           <td>社会保障号码:</td>
-          <td>xxxxxxxxxxxxxxxxxxxxx</td>
+          <td>{{list.id}}</td>
         </tr>
          <tr>
           <td>姓名:</td>
-          <td>xxxxxxxxxxxxxxxxxxxxx</td>
+          <td>{{list.name}}</td>
         </tr>
          <tr>
           <td>所属银行:</td>
-          <td>xxxxxxxxxxxxxxxxxxxxx</td>
+          <td>{{list.bankName}}</td>
         </tr>
          <tr>
           <td>银行服务网点:</td>
-          <td>xxxxxxxxxxxxxxxxxxxxx</td>
+          <td>{{list.bankOutlets}}</td>
         </tr>
          <tr>
           <td>网点地址:</td>
-          <td>xxxxxxxxxxxxxxxxxxxxx</td>
+          <td>{{list.bankOutletsAddress}}</td>
         </tr>
          <tr>
           <td>咨询电话:</td>
-          <td>xxxxxxxxxxxxxxxxxxxxx</td>
+          <td>{{list.advicePhone}}</td>
         </tr>
       </table>
-      <div v-if="!search" class="error">
-        <span>您当前的制卡进度为：到达省卡中心！<br/>您的信息待采集，请到四平市政务大厅办理信息采集</span>
+      <div v-if="searchT" class="error">
+        <span style="color:red">{{msg}}</span>
       </div>
       <div v-if="search" class="esc">
           <el-button type="primary" @click="escOut" size="small">退 出</el-button>
@@ -63,15 +63,16 @@ export default {
     data(){
         return{
         search:false,
-        auditName:'',
-        tableData: [{
-          id:'220303195209023430',
-          name:'艾成学',
-          service:'中国农业银行股份有限公司铁东支行',
-          bank:'农业银行',
-          address:'四平市铁东区中央东路1251号',
-          phone:'028-1234567',
-        }]
+        searchT:false,
+        id:'',
+        list:{
+          advicePhone: "",
+          bankName: " ",
+          bankOutlets: "",
+          bankOutletsAddress: "",
+          id: "",
+          msg:''
+        }
       }
     },
     computed: mapState({
@@ -81,9 +82,33 @@ export default {
     },
     methods:{
       searchHandle(){
-        this.search = true;
+        if(this.id != ''){
+          this.$http("get", "/info",{id:this.id}).then(data => {
+            if(data.code==200){
+                this.search = true;
+                this.searchT = false;
+                this.list = data.data;
+            }else{
+              this.searchT = true;
+              this.search = false;
+              this.msg = data.msg;
+            }
+          });
+        }else{
+            this.$message({
+                type: 'warning',
+                message: '请输入您的身份证号码'
+            });     
+        }
       },
       escOut(){
+        this.list = {
+          advicePhone: "",
+          bankName: " ",
+          bankOutlets: "",
+          bankOutletsAddress: "",
+          id: "",
+        }
         this.search = false;
       }
     },
@@ -145,10 +170,13 @@ table{
   tr td:nth-child(1){
     text-align: right;
     padding: 10px 0;
+    width: 150px;
+    font-weight: bold;
   }
   tr td:nth-child(2){
     text-align: left;
     padding: 10px;
+    font-size: 14px;
   }
 }
 .error{
@@ -183,7 +211,12 @@ table{
     }
     table{
       width: 100%;
-      td{
+      tr td:nth-child(1){
+        width: 80px;
+        font-size: 14px;
+      }
+      tr td:nth-child(2){
+        width: 90px;
         font-size: 12px;
       }
     }
