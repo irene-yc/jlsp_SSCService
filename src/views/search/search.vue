@@ -183,6 +183,9 @@ table{
     }
     table{
       width: 100%;
+      td{
+        font-size: 12px;
+      }
     }
     .esc button{
       width: 90%;
