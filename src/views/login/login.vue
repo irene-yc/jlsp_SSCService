@@ -3,7 +3,7 @@
     <div class="login-top">
         <img src="../../assets/images/login/logo1.png">
         <h1>
-            {{systemShowName?systemShowName:'四平市社会保障卡信息查询服务后台管理系统'}}
+            {{systemShowName?systemShowName:'四平市社会保障卡信息查询系统'}}
         </h1>
     </div>
     <div class="login-bottom">

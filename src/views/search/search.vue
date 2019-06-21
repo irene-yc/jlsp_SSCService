@@ -78,7 +78,7 @@
           </div>
           <div class="jc">
               <a style="display:block;width:220px; height:63px;float:left; margin-right:10px;" href="http://report.12377.cn:13225/toreportinputNormal_anis.do" target="_blank"><img style=" width:100%; height:100%;" src="../../assets/images/jbzx_14.png"></a>
-                <p class="copyright_a"><span id="_span_jiucuo"><img onclick="Link('2203000001')" style="margin:0;border:0;cursor: pointer;" src="http://pucha.kaipuyun.cn/exposure/images/jiucuo.png?v=2203000001"></span></p>
+                <p class="copyright_a"><span id="_span_jiucuo"><img @click="Link('2203000001')" style="margin:0;border:0;cursor: pointer;" src="http://pucha.kaipuyun.cn/exposure/images/jiucuo.png?v=2203000001"></span></p>
               <ul>
                   <li><a href="http://www.siping.gov.cn/wzdt/" target="_blank">网站地图</a>｜</li>
                   <li><a href="http://www.siping.gov.cn/gywm/" target="_blank">关于我们</a>｜</li>
@@ -96,7 +96,7 @@ export default {
     name:'specialAudit',
     data(){
         return{
-        search:false,
+        search:true,
         searchT:false,
         id:'',
         list:{
@@ -135,6 +135,9 @@ export default {
             });     
         }
       },
+      Link(code){
+        window.location.href=`http://121.43.68.40/exposure/jiucuo.html?site_code=${code}`
+      },
       escOut(){
         this.list = {
           advicePhone: "",
@@ -143,6 +146,7 @@ export default {
           bankOutletsAddress: "",
           id: "",
         }
+        this.id = ''
         this.search = false;
       }
     },
@@ -154,18 +158,17 @@ export default {
 /* 在这里写css样式 */
 /* 新建完了这个页面要去添加路由，在src/router.js里面添加，添加方法在readme里面 */
 .main{
-  height:100vh;
-  position:relative;
+  min-height:100vh;
   a{
     color:#60636d;
     text-decoration:none
   }
   .search-foot{
+    margin-top:350px;
     background:#fff;
-    position:absolute;
     width:100%;
-    height:200px;
-    bottom: 0px;
+    height:280px;
+    border:1px solid #ccc;
   }
   .dz{
        float: left;
@@ -254,7 +257,7 @@ export default {
 html{
   background-color: #2296e8;
   background-color: #000;
-  background: url('../../assets/images/timg.jpeg') no-repeat;
+  background: url('../../assets/images/timg.jpeg') fixed no-repeat;
   background-size: 100% 100%;
 }
 body{
@@ -281,8 +284,13 @@ table{
 }
 .esc{
   margin: 10px 0;
+  display: flex;
+  justify-content: flex-end
 }
 @media (max-width: 500px){
+  .search-foot{
+    display: none
+  }
     html,body{
         background: #000;
         background-color: #2296e8;
@@ -316,6 +324,9 @@ table{
         width: 90px;
         font-size: 12px;
       }
+    }
+    .esc{
+      justify-content: center;
     }
     .esc button{
       width: 90%;
