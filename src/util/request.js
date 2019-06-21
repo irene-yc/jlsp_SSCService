@@ -32,8 +32,8 @@ export const iHttp = (type, url, data = {}, headersV = cont) => {
   return new Promise((resolve, reject) => {
     let init = {
       method: type,
-      // url: '/info'+url,
-      url: url,
+      // url: `http://114.116.34.164:8999${url}`,
+      url:'/jl'+url,
       headers: {
         "Content-Type": headersV
       }

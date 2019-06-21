@@ -1,17 +1,17 @@
 <template>
 <div class="index">
-  <el-row class="bar">
-    <!-- <el-col :span="17">
+  <!-- <el-row class="bar">
+    <el-col :span="17">
       <el-button type="primary" size="small">Excel模版下载</el-button>
       <el-button type="primary" size="small">Excel数据导入</el-button>
-    </el-col> -->
+    </el-col>
     <el-col :offset="17" :span="5">
       <el-input v-model="input" size="small" placeholder="请输入内容"></el-input>
     </el-col>
     <el-col :span="2" style="text-align:right">
       <el-button type="primary" size="small">查询</el-button>
     </el-col>
-  </el-row>
+  </el-row> -->
   <el-table
     :data="tableData"
     border
@@ -77,35 +77,7 @@ export default {
   name: "index",
   data() {
     return {
-      tableData: [{
-          date: 'xxxxxxxxxxxxxxxxx',
-          name: 'xxxxxxx',
-          province: 'xxxxxxx',
-          city: 'xxxxxxx',
-          address: 'xxxxxxxxxxxxxxxxxxxxxxxx',
-          zip: 200333
-        }, {
-          date: 'xxxxxxxxxxxxxxxxx',
-          name: 'xxxxxxx',
-          province: 'xxxxxxx',
-          city: 'xxxxxxx',
-          address: 'xxxxxxxxxxxxxxxxxxxxxxxx',
-          zip: 200333
-        }, {
-          date: 'xxxxxxxxxxxxxxxxx',
-          name: 'xxxxxxx',
-          province: 'xxxxxxx',
-          city: 'xxxxxxx',
-          address: 'xxxxxxxxxxxxxxxxxxxxxxxx',
-          zip: 200333
-        }, {
-          date: 'xxxxxxxxxxxxxxxxx',
-          name: 'xxxxxxx',
-          province: 'xxxxxxx',
-          city: 'xxxxxxx',
-          address: 'xxxxxxxxxxxxxxxxxxxxxxxx',
-          zip: 200333
-        }],
+      tableData: [],
       currentPage: 1,
       input:'',
       total:0,

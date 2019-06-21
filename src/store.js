@@ -12,15 +12,18 @@ export default new Vuex.Store({
       username: "",
     },
     loginInfo:[],
-    systemShowName:{}
+    systemShowName:{},
+    // hostname:'http://114.116.34.164:8999',
+    hostname:'/jl',
   },
   getters: {
     user(state){
       return state.userInfo
     },
-    token(state){
-      return state.token
+    hostname(state){
+      return state.hostname
     }
+    
 
   },
   mutations: {

@@ -132,14 +132,11 @@ export default {
       this.codeSrc = ''
       let This = this
       setTimeout(() => {
-        This.codeSrc = "/validateCode/captcha.jpg?t="+new Date()
+        This.refreshCode()
       }, 51);
     },
     refreshCode() {
-    //  this.$http("get", "/validateCode/captcha.jpg?t="+new Date()).then(data => {
-    //    data?this.codeSrc = data : this.codeSrc = ''
-    //  });
-    this.codeSrc = "/validateCode/captcha.jpg?t="+new Date()
+    this.codeSrc = `${this.$store.getters.hostname}/validateCode/captcha.jpg?t=${new Date()}`
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
