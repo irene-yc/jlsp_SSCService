@@ -92,11 +92,13 @@
 
 <script>
 import { mapState } from 'vuex'
+import { setTimeout } from 'timers';
 export default {
     name:'specialAudit',
     data(){
         return{
-        search:true,
+        timer:null,
+        search:false,
         searchT:false,
         id:'',
         list:{
@@ -114,14 +116,40 @@ export default {
     }),
     mounted(){
     },
+    watch:{
+      timer(val){
+        console.log(val)
+      },
+      search(val){
+        console.log(val)
+      }
+
+    },
     methods:{
       searchHandle(){
         if(this.id != ''){
           this.$http("get", "/info",{id:this.id}).then(data => {
             if(data.code==200){
+              // 置空计时器
+              // debugger
+                clearTimeout(this.timer)
+
                 this.search = true;
                 this.searchT = false;
                 this.list = data.data;
+                // 1分钟后关闭且清空显示内容
+                this.timer = setTimeout(()=>{
+                  this.list = {
+                    advicePhone: "",
+                    bankName: " ",
+                    bankOutlets: "",
+                    bankOutletsAddress: "",
+                    id: "",
+                  }
+                  this.id = ''
+                  this.search = false;
+                },6000)
+                console.log(this.timer,'>>>>>>>>>>')
             }else{
               this.searchT = true;
               this.search = false;
@@ -158,43 +186,61 @@ export default {
 /* 在这里写css样式 */
 /* 新建完了这个页面要去添加路由，在src/router.js里面添加，添加方法在readme里面 */
 .main{
-  min-height:100vh;
+  min-height:100%;
+  position:relative
   a{
     color:#60636d;
     text-decoration:none
   }
   .search-foot{
-    margin-top:350px;
+    position:absolute;
+    bottom:0;
+    // margin-top:350px;
     background:#fff;
     width:100%;
-    height:280px;
-    border:1px solid #ccc;
+    // height:280px;
+    // border:1px solid #ccc;
+    
   }
   .dz{
-       float: left;
-
+        text-align: center;
+        width:20%;
+        min-width: 145px;
+        margin-top:20px;
   }
   .copyright {
+    display:flex;
+    justify-content: space-around;
     width: 75%;
+    min-width: 660px;
     margin: 50px auto;
     position: relative;
     overflow: hidden;
     .ms{
-          padding-left: 125px;
-          /* height: 155px; */
+          // padding-left: 125px;
           font-size: 12px;
-          float: left;
           display: block;
           margin-top: 20px;
           text-align: center;
+        width:30%;
+        min-width: 290px;
+
+
           p{
           line-height: 25px;
+        text-align: center;
 
           }
     }
     .jc{
-          float: right;
-          width: 365px;
+          margin-top:20px;
+          width: 30%;
+          min-width: 220px;
+          text-align: center;
+          // display:flex;
+          // flex-direction: column;
+          // align-items: center;
+          // justify-content: center;
           ul{
                 list-style: none;
                 width: 100%;
@@ -202,7 +248,8 @@ export default {
                  justify-content: center;
                  margin-top:40px;
                  li{
-                   font-size: 14px
+                   font-size: 14px;
+
                  }
           }
 
@@ -281,6 +328,8 @@ table{
 }
 .error{
   padding: 0 0 30px 0;
+  // border:1px solid red;
+  text-align: center;
 }
 .esc{
   margin: 10px 0;

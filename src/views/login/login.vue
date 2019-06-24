@@ -142,7 +142,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           //先验证验证码
-          this.$http("post", `/validateCode/validate/${this.ruleForm.verify}`).then((res)=>{
+          this.$http("post", `${this.$store.getters.hostname}/validateCode/validate/${this.ruleForm.verify}`).then((res)=>{
             if(res.code==200){
                 this.$http("post", "/login",{
                     "userName":this.ruleForm.account,

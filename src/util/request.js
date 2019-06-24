@@ -30,10 +30,13 @@ let cont = "application/json; charset=utf-8";
 
 export const iHttp = (type, url, data = {}, headersV = cont) => {
   return new Promise((resolve, reject) => {
+    let a  = ''
+    url.indexOf("http") != -1 ? a = url : a = `/jl${url}`
+    
     let init = {
       method: type,
-      // url: `http://114.116.34.164:8999${url}`,
-      url:'/jl'+url,
+      // url: `http://114.116.34.164:8999/jl${url}`,
+      url:a,
       headers: {
         "Content-Type": headersV
       }
@@ -43,6 +46,7 @@ export const iHttp = (type, url, data = {}, headersV = cont) => {
     // :type === "get" 
     //   ? (init["params"] = data) 
     //   : (init["data"] = data);
+
     init["params"] = data
     axios(init)
       .then(

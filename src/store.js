@@ -13,8 +13,8 @@ export default new Vuex.Store({
     },
     loginInfo:[],
     systemShowName:{},
-    // hostname:'http://114.116.34.164:8999',
-    hostname:'/jl',
+    hostname:'http://114.116.34.164:8999/jl',
+    // hostname:'/jl',
   },
   getters: {
     user(state){
