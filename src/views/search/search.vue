@@ -56,7 +56,7 @@
         </div> -->
 
     </div>
-      <div class="search-foot">
+      <div id='footer'>
         <div class="copyright clearfix">
           <div class="dz">   
               <h6  style="display:flex;align-items:center">	
@@ -77,8 +77,16 @@
                     <p><span id="cnzz_stat_icon_1272818459"><a href="https://www.cnzz.com/stat/website.php?web_id=1272818459" target="_blank" title="站长统计"><img border="0" hspace="0" vspace="0" src="http://icon.cnzz.com/img/pic1.gif"></a></span></p>
           </div>
           <div class="jc">
-              <a style="display:block;width:220px; height:63px;float:left; margin-right:10px;" href="http://report.12377.cn:13225/toreportinputNormal_anis.do" target="_blank"><img style=" width:100%; height:100%;" src="../../assets/images/jbzx_14.png"></a>
-                <p class="copyright_a"><span id="_span_jiucuo"><img @click="Link('2203000001')" style="margin:0;border:0;cursor: pointer;" src="http://pucha.kaipuyun.cn/exposure/images/jiucuo.png?v=2203000001"></span></p>
+            <div style="pic_link">
+              <a style="display:block;width:220px; height:63px; float:left;margin-right:10px;" href="http://report.12377.cn:13225/toreportinputNormal_anis.do" target="_blank">
+              <img style=" width:100%; height:100%;" src="../../assets/images/jbzx_14.png">
+              </a>
+              <p class="copyright_a">
+                <span id="_span_jiucuo">
+                <img @click="Link('2203000001')" style="margin:0;border:0;cursor: pointer;" src="http://pucha.kaipuyun.cn/exposure/images/jiucuo.png?v=2203000001"></span>
+              </p>
+            </div>
+              
               <ul>
                   <li><a href="http://www.siping.gov.cn/wzdt/" target="_blank">网站地图</a>｜</li>
                   <li><a href="http://www.siping.gov.cn/gywm/" target="_blank">关于我们</a>｜</li>
@@ -92,11 +100,12 @@
 
 <script>
 import { mapState } from 'vuex'
-import { setTimeout } from 'timers';
+// import { setTimeout } from 'timers';
 export default {
     name:'specialAudit',
     data(){
         return{
+        fullHeight: document.documentElement.clientHeight,
         timer:null,
         search:false,
         searchT:false,
@@ -115,15 +124,16 @@ export default {
         loginInfo: state => state.loginInfo.user,
     }),
     mounted(){
+      document.getElementById('footer').className = 'search-foot1'
     },
-    watch:{
-      timer(val){
-        console.log(val)
-      },
+    watch: {
       search(val){
-        console.log(val)
+        if(val){
+          document.getElementById('footer').className = 'search-foot'
+        }else{
+          document.getElementById('footer').className = 'search-foot1'
+        }
       }
-
     },
     methods:{
       searchHandle(){
@@ -131,9 +141,8 @@ export default {
           this.$http("get", "/info",{id:this.id}).then(data => {
             if(data.code==200){
               // 置空计时器
-              // debugger
                 clearTimeout(this.timer)
-
+        
                 this.search = true;
                 this.searchT = false;
                 this.list = data.data;
@@ -148,8 +157,7 @@ export default {
                   }
                   this.id = ''
                   this.search = false;
-                },6000)
-                console.log(this.timer,'>>>>>>>>>>')
+                },60000)
             }else{
               this.searchT = true;
               this.search = false;
@@ -187,20 +195,23 @@ export default {
 /* 新建完了这个页面要去添加路由，在src/router.js里面添加，添加方法在readme里面 */
 .main{
   min-height:100%;
-  position:relative
+  position: relative;
   a{
     color:#60636d;
     text-decoration:none
   }
   .search-foot{
-    position:absolute;
-    bottom:0;
-    // margin-top:350px;
     background:#fff;
     width:100%;
-    // height:280px;
-    // border:1px solid #ccc;
-    
+    margin-top:360px;
+    position: relative;
+    border:1px solid #fff;
+  }
+   .search-foot1{
+    background:#fff;
+    width:100%;
+    position: absolute;
+    bottom: 0px;
   }
   .dz{
         text-align: center;
@@ -237,10 +248,11 @@ export default {
           width: 30%;
           min-width: 220px;
           text-align: center;
-          // display:flex;
-          // flex-direction: column;
-          // align-items: center;
-          // justify-content: center;
+          .pic_link{
+            display:flex;
+            flex-wrap:wrap;
+            justify-content:center
+          }
           ul{
                 list-style: none;
                 width: 100%;
@@ -271,8 +283,8 @@ export default {
     background-color: #ffffff;
     padding: 20px 20px;
     border-radius: 5px;
-    position: relative;
-    top: 120px;
+    position:relative;
+    top:120px;
     .search-handle{
         display:flex;
         align-items:center
