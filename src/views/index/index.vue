@@ -1,17 +1,18 @@
 <template>
 <div class="index">
-  <!-- <el-row class="bar">
-    <el-col :span="17">
+  <el-row class="bar">
+    <!-- <el-col :span="17">
       <el-button type="primary" size="small">Excel模版下载</el-button>
       <el-button type="primary" size="small">Excel数据导入</el-button>
-    </el-col>
+    </el-col> -->
     <el-col :offset="17" :span="5">
-      <el-input v-model="input" size="small" placeholder="请输入内容"></el-input>
+      <el-input v-model="input" size="small" placeholder="请输入社保账号查询" clearable></el-input>
     </el-col>
     <el-col :span="2" style="text-align:right">
-      <el-button type="primary" size="small">查询</el-button>
+      <el-button v-if="input" type="primary" size="small" @click="getOne">查询</el-button>
+      <el-button v-else type="primary" size="small" @click="init">查看全部</el-button>
     </el-col>
-  </el-row> -->
+  </el-row>
   <el-table
     :data="tableData"
     border
@@ -35,10 +36,19 @@
       label="所属银行"
       width="120">
     </el-table-column>
+    <!-- <el-table-column
+      prop="bankOutletsPic"
+      label="网点图片"
+      width="120">
+       <template slot-scope="scope">
+        <el-button @click="viewpic(scope.row.id)">查看图片</el-button>
+      </template>
+    </el-table-column> -->
     <el-table-column
       prop="bankOutlets"
       label="银行服务网点"
       width="200">
+     
     </el-table-column>
     <el-table-column
       prop="bankOutletsAddress"
@@ -73,10 +83,14 @@
 </style>
 
 <script>
+// import { Base64 } from 'js-base64';
+
 export default {
   name: "index",
   data() {
     return {
+      showPic:false,
+      picbase64:'',
       tableData: [],
       currentPage: 1,
       input:'',
@@ -85,6 +99,17 @@ export default {
     };
   },
   methods: {
+    viewpic(id){
+       this.$http("get", `/info?id=${id}`).then(data => {
+          if(data.code==200){
+          this.picbase64 = data.data.bankOutletsPic
+          this.showPic = true
+          }else{
+            this.$message.warning('获取失败')
+          }
+        });
+
+    },
     init(){
           this.$http("get", "/list",{currentPage:this.currentPage,pageSize:this.pageSize}).then(data => {
           this.tableData = data.data.records;
@@ -105,6 +130,15 @@ export default {
      this.currentPage = val;
      console.log(this.pageSize)
      this.init()
+    },
+    getOne(){
+        this.$http("get", `/info?id=${this.input}`).then(data => {
+          if(data.code==200){
+          this.tableData = [data.data];
+          }else{
+            this.$message.warning(data.msg)
+          }
+        });
     }
   },
   created() {

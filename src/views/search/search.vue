@@ -9,10 +9,19 @@
       </el-row>
       <el-row class="searchBox">
         <div>
-          <el-input v-model="id" placeholder="请输入身份证号"></el-input>
+          <!-- <el-input v-model="ruleForm.id" placeholder="请输入身份证号"></el-input> -->
+          <el-form  :model="ruleForm" status-icon :rules="rules" ref="ruleForm" class="demo-ruleForm">
+            <el-form-item  prop="id">
+              <el-input @keyup.enter.native="searchHandle" v-model="ruleForm.id" placeholder="请输入身份证号" autocomplete="off" clearable></el-input>
+            </el-form-item>
+            <!-- 当表单中只有一项时，enter会造成自动提交而刷新页面，所以新增一个项将其隐藏，制造成两项的情况 -->
+            <el-form-item>
+              <el-input id="hiddenText" type="text" style="display:none"> </el-input>
+            </el-form-item>
+          </el-form>
         </div>
         <div>
-          <el-button type="primary" @click="searchHandle">查 询</el-button>
+          <el-button type="primary"  @click="searchHandle">查 询</el-button>
         </div>
       </el-row>
       <table v-if="search">
@@ -20,17 +29,13 @@
           <td>社会保障号码:</td>
           <td>{{list.id}}</td>
         </tr>
-         <tr>
+         <!-- <tr>
           <td>姓名:</td>
           <td>{{list.name}}</td>
-        </tr>
-         <tr>
-          <td>所属银行:</td>
-          <td>{{list.bankName}}</td>
-        </tr>
+        </tr> -->
          <tr>
           <td>银行服务网点:</td>
-          <td>{{list.bankOutlets}}</td>
+          <td>{{list.bankOutlets}}<a @click="viewpic(list.bankOutletsPic)" style="margin-left:10px;cursor:pointer;color:blue">查看</a> </td>
         </tr>
          <tr>
           <td>网点地址:</td>
@@ -41,21 +46,25 @@
           <td>{{list.advicePhone}}</td>
         </tr>
       </table>
+      <div v-if="search" style="margin-top:20px;" class="error">
+        <p>请持卡人携带有效身份证件到以上指定银行网点领卡。代领卡需由代领人携带本人和被代领人有效身份证原件到以上指定银行网点领卡。</p>
+      </div>
+
       <div v-if="searchT" class="error">
         <span style="color:red">{{msg}}</span>
       </div>
       <div v-if="search" class="esc">
           <el-button type="primary" @click="escOut" size="small">退 出</el-button>
       </div>
-        <!-- <div style="border:1px solid red; width:700px;">
-          <el-steps :active="1">
-            <el-step title="步骤 1" description="a?"></el-step>
-            <el-step title="步骤 2" description="b?"></el-step>
-            <el-step title="步骤 3" description="这段就没那么长了"></el-step>
-          </el-steps>
-        </div> -->
-
     </div>
+    <el-dialog
+      title="查看图片"
+      :visible.sync="showPic"
+      width="80%">
+      <div >
+        <img :src="'data:image/png;base64,'+list.bankOutletsPic" style="width:100%">
+      </div>
+    </el-dialog>
       <div id='footer'>
         <div class="copyright clearfix">
           <div class="dz">   
@@ -77,7 +86,7 @@
                     <p><span id="cnzz_stat_icon_1272818459"><a href="https://www.cnzz.com/stat/website.php?web_id=1272818459" target="_blank" title="站长统计"><img border="0" hspace="0" vspace="0" src="http://icon.cnzz.com/img/pic1.gif"></a></span></p>
           </div>
           <div class="jc">
-            <div style="pic_link">
+            <div class="pic_link">
               <a style="display:block;width:220px; height:63px; float:left;margin-right:10px;" href="http://report.12377.cn:13225/toreportinputNormal_anis.do" target="_blank">
               <img style=" width:100%; height:100%;" src="../../assets/images/jbzx_14.png">
               </a>
@@ -104,12 +113,30 @@ import { mapState } from 'vuex'
 export default {
     name:'specialAudit',
     data(){
+        var validateId = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入身份证号码'));
+        } else {
+          var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;  
+          if(reg.test(value) === false)  
+            {  
+                callback(new Error('身份证输入不合法'));
+            }  
+          callback();
+        }
+      };
         return{
+        showPic:false,
+        rules: {
+          id: [
+            { validator: validateId, trigger: 'blur' }
+          ]
+        },
         fullHeight: document.documentElement.clientHeight,
         timer:null,
         search:false,
         searchT:false,
-        id:'',
+        ruleForm:{id:''},
         list:{
           advicePhone: "",
           bankName: " ",
@@ -136,40 +163,48 @@ export default {
       }
     },
     methods:{
+      viewpic(){
+        this.showPic = true
+    },
       searchHandle(){
-        if(this.id != ''){
-          this.$http("get", "/info",{id:this.id}).then(data => {
-            if(data.code==200){
-              // 置空计时器
-                clearTimeout(this.timer)
-        
-                this.search = true;
-                this.searchT = false;
-                this.list = data.data;
-                // 1分钟后关闭且清空显示内容
-                this.timer = setTimeout(()=>{
-                  this.list = {
-                    advicePhone: "",
-                    bankName: " ",
-                    bankOutlets: "",
-                    bankOutletsAddress: "",
-                    id: "",
-                  }
-                  this.id = ''
-                  this.search = false;
-                },60000)
-            }else{
-              this.searchT = true;
-              this.search = false;
-              this.msg = data.msg;
-            }
-          });
-        }else{
+        this.$refs['ruleForm'].validate((valid) => {
+          if (valid) {
+            this.$http("get", "/info",{id:this.ruleForm.id}).then(data => {
+              if(data.code==200){
+                // 置空计时器
+                  clearTimeout(this.timer)
+          
+                  this.search = true;
+                  this.searchT = false;
+                  this.list = data.data;
+                  // 1分钟后关闭且清空显示内容
+                  this.timer = setTimeout(()=>{
+                    this.list = {
+                      advicePhone: "",
+                      bankName: " ",
+                      bankOutlets: "",
+                      bankOutletsAddress: "",
+                      id: "",
+                    }
+                    this.ruleForm.id = ''
+                    this.search = false;
+                    this.showPic=false
+
+                  },60000)
+              }else{
+                this.searchT = true;
+                this.search = false;
+                this.msg = data.msg;
+              }
+            });
+          } else {
             this.$message({
                 type: 'warning',
-                message: '请输入您的身份证号码'
+                message: '请输入正确的身份证'
             });     
-        }
+            return false;
+          }
+        });
       },
       Link(code){
         window.location.href=`http://121.43.68.40/exposure/jiucuo.html?site_code=${code}`
@@ -182,8 +217,9 @@ export default {
           bankOutletsAddress: "",
           id: "",
         }
-        this.id = ''
+        this.ruleForm.id = ''
         this.search = false;
+        this.showPic=false
       }
     },
     
@@ -194,6 +230,7 @@ export default {
 /* 在这里写css样式 */
 /* 新建完了这个页面要去添加路由，在src/router.js里面添加，添加方法在readme里面 */
 .main{
+  
   min-height:100%;
   position: relative;
   a{
@@ -251,7 +288,7 @@ export default {
           .pic_link{
             display:flex;
             flex-wrap:wrap;
-            justify-content:center
+            justify-content:center;
           }
           ul{
                 list-style: none;
@@ -340,8 +377,14 @@ table{
 }
 .error{
   padding: 0 0 30px 0;
-  // border:1px solid red;
   text-align: center;
+  display: flex;
+  justify-content: center;  
+  p{
+    width: 90%;
+    color:red;
+    font-size: 14px;
+  }
 }
 .esc{
   margin: 10px 0;
@@ -349,7 +392,7 @@ table{
   justify-content: flex-end
 }
 @media (max-width: 500px){
-  .search-foot{
+  #footer{
     display: none
   }
     html,body{
@@ -394,6 +437,9 @@ table{
       margin: 20px 0;
     }
     .error span{
+      font-size: 12px;
+    }
+    .error p{
       font-size: 12px;
     }
 }
